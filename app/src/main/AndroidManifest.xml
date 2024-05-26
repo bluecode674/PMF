@@ -12,7 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PMF"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ui.main.elements.RoomTemperatureStorageFragment"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.elements.FreezeFragment"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.elements.ColdStorageFragment"
+            android:exported="false" />
         <activity android:name=".ui.setting.elements.NotificationSettingActivity" />
         <activity
             android:name=".MainActivity"

@@ -1,4 +1,4 @@
-package com.example.pmf.ui.setting
+package com.example.pmf.ui.setting.elements
 
 import android.os.Bundle
 import android.view.LayoutInflater
