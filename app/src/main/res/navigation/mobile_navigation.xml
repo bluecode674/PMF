@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_main"
-        android:name="com.example.pmf.ui.recipe.RecipeFragment"
+        android:name="com.example.pmf.ui.main.MainFragment"
         android:label="@string/title_main"
         tools:layout="@layout/fragment_main" />
 
     <fragment
         android:id="@+id/navigation_recipe"
-        android:name="com.example.pmf.ui.main.MainFragment"
+        android:name="com.example.pmf.ui.recipe.RecipeFragment"
         android:label="@string/title_recipe"
         tools:layout="@layout/fragment_recipe" />
 
@@ -22,4 +22,11 @@
         android:name="com.example.pmf.ui.setting.SettingFragment"
         android:label="@string/title_setting"
         tools:layout="@layout/fragment_setting" />
+
+    <fragment
+        android:id="@+id/notificationSettingFragment"
+        android:name="com.example.pmf.ui.setting.NotificationSettingFragment"
+        android:label="알림 설정"
+        tools:layout="@layout/fragment_notification_setting" />
+
 </navigation>

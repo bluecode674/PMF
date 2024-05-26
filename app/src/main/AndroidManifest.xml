@@ -12,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PMF"
         tools:targetApi="31">
+
+        <activity android:name=".ui.setting.elements.NotificationSettingActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
