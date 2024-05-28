@@ -12,8 +12,14 @@
         android:title="@string/title_recipe" />
 
     <item
+        android:id="@+id/navigation_ingredient"
+        android:icon="@drawable/ic_setting_black_24dp"
+        android:title="@string/title_ingredient" />
+
+    <item
         android:id="@+id/navigation_setting"
         android:icon="@drawable/ic_setting_black_24dp"
         android:title="@string/title_setting" />
+
 
 </menu>

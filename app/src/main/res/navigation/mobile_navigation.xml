@@ -24,8 +24,14 @@
         tools:layout="@layout/fragment_setting" />
 
     <fragment
+        android:id="@+id/navigation_ingredient"
+        android:name="com.example.pmf.ui.ingredient.IngredientFragment"
+        android:label="@string/title_ingredient"
+        tools:layout="@layout/fragment_ingredient" />
+
+    <fragment
         android:id="@+id/notificationSettingFragment"
-        android:name="com.example.pmf.ui.setting.NotificationSettingFragment"
+        android:name="com.example.pmf.ui.setting.elements.NotificationSettingFragment"
         android:label="알림 설정"
         tools:layout="@layout/fragment_notification_setting" />
 
