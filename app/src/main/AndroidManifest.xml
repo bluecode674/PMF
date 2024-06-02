@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -29,7 +30,7 @@
         <activity
             android:name=".ui.main.elements.ColdStorageFragment"
             android:exported="false" />
-        <activity android:name=".ui.setting.elements.NotificationSettingActivity" />
+        <activity android:name=".ui.setting.elements.NotificationSettingFragment" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -40,6 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver android:name=".ui.receiver.NotificationReceiver" />
     </application>
 
 </manifest>
