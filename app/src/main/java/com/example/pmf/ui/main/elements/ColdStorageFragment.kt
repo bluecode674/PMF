@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pmf.DBHelper
-import com.example.pmf.Ingredient
+import com.example.pmf.DB.DBHelper
 import com.example.pmf.R
 
 class ColdStorageFragment : Fragment() {

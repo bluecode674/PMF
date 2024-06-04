@@ -1,10 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ingredient.IngredientFragment">
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".ui.ingredient.IngredientFragment"
+    android:layout_marginTop="40dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/btn_select_ingredient"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ingredient_selection" />
+
+    <Button
+        android:id="@+id/btn_purchase_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/purchase_date_selection" />
+
+    <Button
+        android:id="@+id/btn_expiry_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/expiry_date_selection" />
+
+    <Spinner
+        android:id="@+id/spinner_storage_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:prompt="@string/storage_location_prompt" />
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add" />
+
+</LinearLayout>

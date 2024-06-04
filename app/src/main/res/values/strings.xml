@@ -4,4 +4,20 @@
     <string name="title_recipe">Recipe</string>
     <string name="title_setting">Setting</string>
     <string name="title_ingredient">Ingredient</string>
+
+
+    <string name="select_ingredient">Select Ingredient</string>
+    <string name="purchase_date">Purchase Date</string>
+    <string name="expiry_date">Expiry Date</string>
+    <string name="select_purchase_date">Select Purchase Date</string>
+    <string name="select_expiry_date">Select Expiry Date</string>
+    <string name="select_storage_location">Select Storage Location</string>
+    <string name="add_ingredient">Add Ingredient</string>
+
+
+    <string name="ingredient_selection">재료 선택</string>
+    <string name="purchase_date_selection">구매 날짜 선택</string>
+    <string name="expiry_date_selection">소비 기한 선택</string>
+    <string name="storage_location_prompt">보관 장소 선택</string>
+    <string name="add">추가</string>
 </resources>

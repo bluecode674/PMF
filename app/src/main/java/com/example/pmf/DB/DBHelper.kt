@@ -1,4 +1,7 @@
-package com.example.pmf
+// 식재료 등록 DB (나의 냉장고 식재료 관리)
+
+
+package com.example.pmf.DB
 
 import android.content.ContentValues
 import android.content.Context
@@ -118,9 +121,13 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         if (cursor.moveToFirst()) {
             do {
                 val name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME))
-                val purchaseDate = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PURCHASE_DATE))
+                val purchaseDate = cursor.getString(cursor.getColumnIndexOrThrow(
+                    COLUMN_PURCHASE_DATE
+                ))
                 val expiryDate = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EXPIRY_DATE))
-                val storageLocation = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_STORAGE_LOCATION))
+                val storageLocation = cursor.getString(cursor.getColumnIndexOrThrow(
+                    COLUMN_STORAGE_LOCATION
+                ))
                 itemList.add(Ingredient(name, purchaseDate, expiryDate, storageLocation))
             } while (cursor.moveToNext())
         }
@@ -136,9 +143,13 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         if (cursor.moveToFirst()) {
             do {
                 val name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME))
-                val purchaseDate = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PURCHASE_DATE))
+                val purchaseDate = cursor.getString(cursor.getColumnIndexOrThrow(
+                    COLUMN_PURCHASE_DATE
+                ))
                 val expiryDate = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EXPIRY_DATE))
-                val storageLocation = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_STORAGE_LOCATION))
+                val storageLocation = cursor.getString(cursor.getColumnIndexOrThrow(
+                    COLUMN_STORAGE_LOCATION
+                ))
                 itemList.add(Ingredient(name, purchaseDate, expiryDate, storageLocation))
             } while (cursor.moveToNext())
         }
@@ -154,9 +165,13 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         if (cursor.moveToFirst()) {
             do {
                 val name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME))
-                val purchaseDate = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PURCHASE_DATE))
+                val purchaseDate = cursor.getString(cursor.getColumnIndexOrThrow(
+                    COLUMN_PURCHASE_DATE
+                ))
                 val expiryDate = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EXPIRY_DATE))
-                val storageLocation = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_STORAGE_LOCATION))
+                val storageLocation = cursor.getString(cursor.getColumnIndexOrThrow(
+                    COLUMN_STORAGE_LOCATION
+                ))
                 itemList.add(Ingredient(name, purchaseDate, expiryDate, storageLocation))
             } while (cursor.moveToNext())
         }

@@ -25,6 +25,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private val REQUEST_NOTIFICATION_PERMISSION = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,23 +53,29 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            when {
-                ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED -> {
-                    // 권한이 이미 부여된 경우
-                    setAlarm()
-                }
-                shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
-                    // 권한이 거부된 경우 사용자에게 이유 설명
-                    Toast.makeText(this, "알림 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
-                }
-                else -> {
-                    // 권한 요청
-                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                }
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                // 권한 요청
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), REQUEST_NOTIFICATION_PERMISSION)
+            } else {
+                // 권한이 이미 부여된 경우
+                setAlarm()
             }
         } else {
             // API 레벨 33 이하에서는 바로 알람 설정
             setAlarm()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_NOTIFICATION_PERMISSION) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                // 권한이 부여된 경우
+                setAlarm()
+            } else {
+                // 권한이 거부된 경우
+                Toast.makeText(this, "알림을 사용하려면 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -87,20 +94,11 @@ class MainActivity : AppCompatActivity() {
         // 6시간마다 알람 설정
         val interval = AlarmManager.INTERVAL_HALF_DAY
         val startTime = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 6)
+            set(Calendar.HOUR_OF_DAY, 24)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
         }.timeInMillis
 
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, startTime, interval, pendingIntent)
-    }
-
-    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-        if (isGranted) {
-            setAlarm() // 권한이 부여된 경우 알람 설정
-        } else {
-            // 권한이 거부된 경우 실행할 코드
-            Toast.makeText(this, "알림을 사용하려면 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
-        }
     }
 }

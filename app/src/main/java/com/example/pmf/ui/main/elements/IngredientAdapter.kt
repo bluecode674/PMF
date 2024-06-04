@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pmf.Ingredient
+import com.example.pmf.DB.Ingredient
 import com.example.pmf.R
 
 class IngredientAdapter(private val ingredientList: List<Ingredient>) : RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>() {
