@@ -6,24 +6,32 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/nameTextView"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvIngredientName"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Ingredient Name"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/purchaseDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:id="@+id/tvExpiryDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Expiry Date"
+        android:textSize="16sp"/>
 
     <TextView
-        android:id="@+id/expiryDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:id="@+id/tvQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quantity"
+        android:textSize="16sp"/>
 
     <TextView
-        android:id="@+id/storageLocationTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:id="@+id/tvRemainingDays"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="D-Day"
+        android:textSize="16sp"/>
+
 </LinearLayout>

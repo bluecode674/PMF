@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".ui.ingredient.IngredientFragment"
@@ -12,19 +12,26 @@
         android:id="@+id/btn_select_ingredient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/ingredient_selection" />
+        android:text="재료 선택" />
 
     <Button
         android:id="@+id/btn_purchase_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/purchase_date_selection" />
+        android:text="구매 날짜 선택" />
 
     <Button
         android:id="@+id/btn_expiry_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/expiry_date_selection" />
+        android:text="소비 기한 선택" />
+
+    <EditText
+        android:id="@+id/et_quantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="수량 입력"
+        android:inputType="number" />
 
     <Spinner
         android:id="@+id/spinner_storage_location"
@@ -36,6 +43,6 @@
         android:id="@+id/btn_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add" />
+        android:text="추가" />
 
 </LinearLayout>

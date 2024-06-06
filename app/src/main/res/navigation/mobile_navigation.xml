@@ -8,26 +8,41 @@
     <fragment
         android:id="@+id/navigation_main"
         android:name="com.example.pmf.ui.main.MainFragment"
-        android:label="@string/title_main"
+        android:label="나의 냉장고"
         tools:layout="@layout/fragment_main" />
 
     <fragment
         android:id="@+id/navigation_recipe"
         android:name="com.example.pmf.ui.recipe.RecipeFragment"
-        android:label="@string/title_recipe"
+        android:label="레시피"
         tools:layout="@layout/fragment_recipe" />
 
     <fragment
         android:id="@+id/navigation_setting"
         android:name="com.example.pmf.ui.setting.SettingFragment"
-        android:label="@string/title_setting"
+        android:label="설정"
         tools:layout="@layout/fragment_setting" />
 
     <fragment
         android:id="@+id/navigation_ingredient"
         android:name="com.example.pmf.ui.ingredient.IngredientFragment"
-        android:label="@string/title_ingredient"
-        tools:layout="@layout/fragment_ingredient" />
+        android:label="식재료 등록"
+        tools:layout="@layout/fragment_ingredient">
+        <action
+            android:id="@+id/action_ingredientFragment_to_ingredientSelectionFragment"
+            app:destination="@id/ingredientSelectionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ingredientSelectionFragment"
+        android:name="com.example.pmf.ui.ingredient.IngredientSelectionFragment"
+        tools:layout="@layout/fragment_ingredient_selection">
+        <action
+            android:id="@+id/action_ingredientSelectionFragment_to_ingredientFragment"
+            app:destination="@id/navigation_ingredient"
+            app:popUpTo="@id/navigation_ingredient"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/notificationSettingFragment"

@@ -8,27 +8,39 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pmf.DB.Ingredient
 import com.example.pmf.R
 
-class IngredientAdapter(private val ingredientList: List<Ingredient>) : RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>() {
+class IngredientAdapter(private var ingredientList: List<Ingredient>) :
+    RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_ingredient, parent, false)
-        return IngredientViewHolder(itemView)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_ingredient, parent, false)
+        return IngredientViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: IngredientViewHolder, position: Int) {
-        val currentItem = ingredientList[position]
-        holder.nameTextView.text = currentItem.name
-        holder.purchaseDateTextView.text = currentItem.purchaseDate
-        holder.expiryDateTextView.text = currentItem.expiryDate
-        holder.storageLocationTextView.text = currentItem.storageLocation
+        val ingredient = ingredientList[position]
+        holder.bind(ingredient)
     }
 
-    override fun getItemCount() = ingredientList.size
+    override fun getItemCount(): Int {
+        return ingredientList.size
+    }
+
+    fun updateList(newList: List<Ingredient>) {
+        ingredientList = newList
+        notifyDataSetChanged()
+    }
 
     class IngredientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nameTextView: TextView = itemView.findViewById(R.id.nameTextView)
-        val purchaseDateTextView: TextView = itemView.findViewById(R.id.purchaseDateTextView)
-        val expiryDateTextView: TextView = itemView.findViewById(R.id.expiryDateTextView)
-        val storageLocationTextView: TextView = itemView.findViewById(R.id.storageLocationTextView)
+        private val tvIngredientName: TextView = itemView.findViewById(R.id.tvIngredientName)
+        private val tvExpiryDate: TextView = itemView.findViewById(R.id.tvExpiryDate)
+        private val tvQuantity: TextView = itemView.findViewById(R.id.tvQuantity)
+        private val tvRemainingDays: TextView = itemView.findViewById(R.id.tvRemainingDays)
+
+        fun bind(ingredient: Ingredient) {
+            tvIngredientName.text = ingredient.name
+            tvExpiryDate.text = ingredient.expiryDate
+            tvQuantity.text = "Quantity: ${ingredient.quantity}"
+            tvRemainingDays.text = "D-Day: ${ingredient.getRemainingDays()}"
+        }
     }
 }

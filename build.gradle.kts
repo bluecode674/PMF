@@ -4,4 +4,5 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android) apply false
 }
 
+
 // 공통 설정을 추가할 수 있습니다.

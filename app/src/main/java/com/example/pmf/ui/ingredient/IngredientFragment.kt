@@ -1,6 +1,5 @@
 package com.example.pmf.ui.ingredient
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,10 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.findNavController
 import com.example.pmf.DB.DBHelper
-import com.example.pmf.DB.BasicIngredientsDBHelper
 import com.example.pmf.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,18 +33,15 @@ class IngredientFragment : Fragment() {
 
         dbHelper = DBHelper(requireContext())
 
-        // 기본 재료 목록을 불러와 팝업 다이얼로그에 설정
-        val basicIngredientsDBHelper = BasicIngredientsDBHelper(requireContext())
-        val basicIngredients = basicIngredientsDBHelper.getAllItems().map { it.name }.toTypedArray()
-
         val btnSelectIngredient: Button = root.findViewById(R.id.btn_select_ingredient)
         val btnAdd: Button = root.findViewById(R.id.btn_add)
         val btnPurchaseDate: Button = root.findViewById(R.id.btn_purchase_date)
         val btnExpiryDate: Button = root.findViewById(R.id.btn_expiry_date)
+        val etQuantity: EditText = root.findViewById(R.id.et_quantity)
         val spinnerStorageLocation: Spinner = root.findViewById(R.id.spinner_storage_location)
 
         btnSelectIngredient.setOnClickListener {
-            showIngredientSelectionDialog(basicIngredients)
+            findNavController().navigate(R.id.action_ingredientFragment_to_ingredientSelectionFragment)
         }
 
         // 보관 장소 스피너 설정
@@ -76,24 +75,37 @@ class IngredientFragment : Fragment() {
 
         btnAdd.setOnClickListener {
             val storageLocation = spinnerStorageLocation.selectedItem.toString()
+            val quantity = etQuantity.text.toString().trim()
 
-            if (::selectedIngredient.isInitialized && ::selectedPurchaseDate.isInitialized && ::selectedExpiryDate.isInitialized) {
-                dbHelper.addItem(selectedIngredient, selectedPurchaseDate, selectedExpiryDate, storageLocation)
+            if (::selectedIngredient.isInitialized && ::selectedPurchaseDate.isInitialized && ::selectedExpiryDate.isInitialized && quantity.isNotEmpty()) {
+                dbHelper.addItem(selectedIngredient, selectedPurchaseDate, selectedExpiryDate, storageLocation, quantity.toInt())
+                Toast.makeText(requireContext(), "재료가 추가되었습니다.", Toast.LENGTH_SHORT).show()
+
+                // 필드 초기화
+                btnSelectIngredient.text = "재료 선택"
+                btnPurchaseDate.text = "구매 날짜 선택"
+                btnExpiryDate.text = "소비 기한 선택"
+                spinnerStorageLocation.setSelection(0)
+                etQuantity.text.clear()
+
+                // 초기화 변수
+                selectedIngredient = ""
+                selectedPurchaseDate = ""
+                selectedExpiryDate = ""
             } else {
-                // Handle error (e.g., show a toast to the user)
+                Toast.makeText(requireContext(), "모든 필드를 입력하세요.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // FragmentResultListener를 통해 데이터 수신 설정
+        setFragmentResultListener("ingredientSelectionKey") { _, bundle ->
+            val result = bundle.getString("selectedIngredient")
+            if (result != null) {
+                selectedIngredient = result
+                btnSelectIngredient.text = selectedIngredient
             }
         }
 
         return root
-    }
-
-    private fun showIngredientSelectionDialog(ingredients: Array<String>) {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("재료 선택")
-        builder.setItems(ingredients) { dialog, which ->
-            selectedIngredient = ingredients[which]
-            view?.findViewById<Button>(R.id.btn_select_ingredient)?.text = selectedIngredient
-        }
-        builder.show()
     }
 }
