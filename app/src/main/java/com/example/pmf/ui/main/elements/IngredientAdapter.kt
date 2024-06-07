@@ -35,15 +35,13 @@ class IngredientAdapter(
     class IngredientViewHolder(itemView: View, private val onItemClicked: (Ingredient) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
         private val tvIngredientName: TextView = itemView.findViewById(R.id.tvIngredientName)
-        private val tvExpiryDate: TextView = itemView.findViewById(R.id.tvExpiryDate)
         private val tvQuantity: TextView = itemView.findViewById(R.id.tvQuantity)
         private val tvRemainingDays: TextView = itemView.findViewById(R.id.tvRemainingDays)
 
         fun bind(ingredient: Ingredient) {
             tvIngredientName.text = ingredient.name
-            tvExpiryDate.text = ingredient.expiryDate
-            tvQuantity.text = "Quantity: ${ingredient.quantity}"
-            tvRemainingDays.text = "D-Day: ${ingredient.getRemainingDays()}"
+            tvQuantity.text = "수량: ${ingredient.quantity}"
+            tvRemainingDays.text = "${ingredient.getRemainingDays()}"
 
             itemView.setOnClickListener {
                 onItemClicked(ingredient)
