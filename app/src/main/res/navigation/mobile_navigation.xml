@@ -14,8 +14,17 @@
     <fragment
         android:id="@+id/navigation_recipe"
         android:name="com.example.pmf.ui.recipe.RecipeFragment"
-        android:label="레시피"
-        tools:layout="@layout/fragment_recipe" />
+        tools:layout="@layout/fragment_recipe">
+        <action
+            android:id="@+id/action_recipeFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/recipeDetailFragment"
+        android:name="com.example.pmf.ui.recipe.RecipeDetailFragment"
+        tools:layout="@layout/fragment_recipe_detail" />
+
 
     <fragment
         android:id="@+id/navigation_setting"
@@ -43,6 +52,9 @@
             app:popUpTo="@id/navigation_ingredient"
             app:popUpToInclusive="true" />
     </fragment>
+
+
+
 
     <fragment
         android:id="@+id/notificationSettingFragment"
