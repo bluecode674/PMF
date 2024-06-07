@@ -33,7 +33,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
     companion object {
         private const val DATABASE_NAME = "ingredients.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 3
         const val TABLE_NAME = "ingre"
         const val COLUMN_NAME = "name"
         const val COLUMN_PURCHASE_DATE = "purchase_date"
@@ -82,6 +82,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
         onCreate(db)
     }
+
 
 
     fun updateItem(name: String, purchaseDate: String, expiryDate: String, quantity: Int) {
