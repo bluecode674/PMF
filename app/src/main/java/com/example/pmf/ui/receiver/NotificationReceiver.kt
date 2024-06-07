@@ -16,20 +16,35 @@ import java.util.*
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val dbHelper = DBHelper(context)
-        val ingredients = dbHelper.getAllItems()
+        val ingredients = try {
+            dbHelper.getAllItems()
+        } catch (e: Exception) {
+            Log.e("NotificationReceiver", "Error getting items from database", e)
+            return
+        }
+
         val sharedPref = context.getSharedPreferences("com.example.pmf", Context.MODE_PRIVATE)
         val daysBefore = sharedPref.getInt("notification_days_before", 1)
         val today = Calendar.getInstance()
 
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
+        if (ingredients.isNullOrEmpty()) {
+            Log.e("NotificationReceiver", "No ingredients found in the database")
+            return
+        }
+
         ingredients.forEach { ingredient ->
-            val expiryDate = Calendar.getInstance().apply {
-                time = sdf.parse(ingredient.expiryDate) ?: return@forEach
-            }
-            expiryDate.add(Calendar.DAY_OF_YEAR, -daysBefore)
-            if (today.after(expiryDate)) {
-                sendNotification(context, ingredient.name, sdf.format(expiryDate.time))
+            try {
+                val expiryDate = Calendar.getInstance().apply {
+                    time = sdf.parse(ingredient.expiryDate) ?: throw NullPointerException("Expiry date parsing failed")
+                }
+                expiryDate.add(Calendar.DAY_OF_YEAR, -daysBefore)
+                if (today.after(expiryDate)) {
+                    sendNotification(context, ingredient.name, sdf.format(expiryDate.time))
+                }
+            } catch (e: Exception) {
+                Log.e("NotificationReceiver", "Error processing ingredient: ${ingredient.name}", e)
             }
         }
     }

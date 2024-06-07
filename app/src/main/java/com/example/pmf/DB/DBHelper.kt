@@ -154,22 +154,39 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
     fun getAllItems(): List<Ingredient> {
         val itemList = mutableListOf<Ingredient>()
-        val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME", null)
-        if (cursor.moveToFirst()) {
-            do {
-                val name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME))
-                val purchaseDate = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PURCHASE_DATE))
-                val expiryDate = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EXPIRY_DATE))
-                val storageLocation = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_STORAGE_LOCATION))
-                val quantity = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_QUANTITY))
-                itemList.add(Ingredient(name, purchaseDate, expiryDate, storageLocation, quantity))
-            } while (cursor.moveToNext())
+        val db = try {
+            this.readableDatabase
+        } catch (e: Exception) {
+            Log.e("DBHelper", "Error opening readable database", e)
+            null
+        } ?: return itemList
+
+        val cursor = try {
+            db.rawQuery("SELECT * FROM $TABLE_NAME", null)
+        } catch (e: Exception) {
+            Log.e("DBHelper", "Error executing query", e)
+            null
         }
-        cursor.close()
+
+        cursor?.use {
+            if (it.moveToFirst()) {
+                do {
+                    val name = it.getString(it.getColumnIndexOrThrow(COLUMN_NAME))
+                    val purchaseDate = it.getString(it.getColumnIndexOrThrow(COLUMN_PURCHASE_DATE))
+                    val expiryDate = it.getString(it.getColumnIndexOrThrow(COLUMN_EXPIRY_DATE))
+                    val storageLocation = it.getString(it.getColumnIndexOrThrow(COLUMN_STORAGE_LOCATION))
+                    val quantity = it.getInt(it.getColumnIndexOrThrow(COLUMN_QUANTITY))
+                    itemList.add(Ingredient(name, purchaseDate, expiryDate, storageLocation, quantity))
+                } while (it.moveToNext())
+            }
+        } ?: run {
+            Log.e("DBHelper", "Cursor is null")
+        }
+
         db.close()
         return itemList
     }
+
 
     fun searchItems(query: String): List<Ingredient> {
         val itemList = mutableListOf<Ingredient>()

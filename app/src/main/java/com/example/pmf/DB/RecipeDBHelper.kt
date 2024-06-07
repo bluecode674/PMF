@@ -4,7 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import org.json.JSONObject
+import org.json.JSONArray
 import java.io.InputStream
 
 data class Recipe(val id: Int, val name: String, val ingredients: List<String>, val instructions: String)
@@ -73,7 +73,7 @@ class RecipeDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     private fun insertInitialData(db: SQLiteDatabase, context: Context) {
         val jsonString = loadJSONFromAsset(context, "recipes.json")
         if (jsonString != null) {
-            val recipesArray = JSONObject(jsonString).getJSONArray("recipes")
+            val recipesArray = JSONArray(jsonString)  // JSON 객체가 아닌 JSON 배열로 파싱
 
             for (i in 0 until recipesArray.length()) {
                 val recipe = recipesArray.getJSONObject(i)
