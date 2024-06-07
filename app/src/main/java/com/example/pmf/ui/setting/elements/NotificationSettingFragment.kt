@@ -17,10 +17,7 @@ class NotificationSettingFragment : Fragment() {
     private lateinit var notificationDateEditText: EditText
     private lateinit var saveButton: Button
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_notification_setting, container, false)
 
         notificationDateEditText = root.findViewById(R.id.editTextNotificationDate)
@@ -47,7 +44,6 @@ class NotificationSettingFragment : Fragment() {
             return
         }
 
-        // SharedPreferences에 저장
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         with(sharedPref.edit()) {
             putInt("notification_days_before", daysBefore)
@@ -55,8 +51,6 @@ class NotificationSettingFragment : Fragment() {
         }
 
         Toast.makeText(requireContext(), "알림 설정이 저장되었습니다.", Toast.LENGTH_SHORT).show()
-
-        // 설정 후 설정 페이지로 이동
         findNavController().navigate(R.id.navigation_setting)
     }
 }

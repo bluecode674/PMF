@@ -91,14 +91,16 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, NotificationReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
-        // 6시간마다 알람 설정
-        val interval = AlarmManager.INTERVAL_HALF_DAY
-        val startTime = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 24)
+        // 매일 오전 7시에 알람 설정
+        val calendar = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 7)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
-        }.timeInMillis
+            if (before(Calendar.getInstance())) {
+                add(Calendar.DAY_OF_MONTH, 1)
+            }
+        }
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, startTime, interval, pendingIntent)
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
     }
 }
