@@ -83,6 +83,17 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         onCreate(db)
     }
 
+
+    fun updateItem(name: String, purchaseDate: String, expiryDate: String, quantity: Int) {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_EXPIRY_DATE, expiryDate)
+            put(COLUMN_QUANTITY, quantity)
+        }
+        db.update(TABLE_NAME, values, "$COLUMN_NAME = ? AND $COLUMN_PURCHASE_DATE = ?", arrayOf(name, purchaseDate))
+        db.close()
+    }
+
     fun addItem(name: String, purchaseDate: String, expiryDate: String, storageLocation: String, quantity: Int) {
         val db = this.writableDatabase
         val values = ContentValues().apply {
@@ -99,6 +110,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     fun updateItem(name: String, purchaseDate: String, expiryDate: String, storageLocation: String, quantity: Int) {
         val db = this.writableDatabase
         val values = ContentValues().apply {
+            put(COLUMN_NAME, name)
+            put(COLUMN_PURCHASE_DATE, purchaseDate)
             put(COLUMN_EXPIRY_DATE, expiryDate)
             put(COLUMN_STORAGE_LOCATION, storageLocation)
             put(COLUMN_QUANTITY, quantity)
@@ -106,6 +119,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.update(TABLE_NAME, values, "$COLUMN_NAME = ? AND $COLUMN_PURCHASE_DATE = ?", arrayOf(name, purchaseDate))
         db.close()
     }
+
+
 
     fun deleteItem(name: String, purchaseDate: String) {
         val db = this.writableDatabase

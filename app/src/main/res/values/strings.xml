@@ -20,4 +20,5 @@
     <string name="expiry_date_selection">소비 기한 선택</string>
     <string name="storage_location_prompt">보관 장소 선택</string>
     <string name="add">추가</string>
+
 </resources>
