@@ -25,13 +25,10 @@ class NotificationReceiver : BroadcastReceiver() {
 
         ingredients.forEach { ingredient ->
             val expiryDate = Calendar.getInstance().apply {
-                time = sdf.parse(ingredient.expiryDate)!!
+                time = sdf.parse(ingredient.expiryDate) ?: return@forEach
             }
-            val notificationStartDate = Calendar.getInstance().apply {
-                time = sdf.parse(ingredient.expiryDate)!!
-                add(Calendar.DAY_OF_YEAR, -daysBefore)
-            }
-            if (today.after(notificationStartDate) && today.before(expiryDate)) {
+            expiryDate.add(Calendar.DAY_OF_YEAR, -daysBefore)
+            if (today.after(expiryDate)) {
                 sendNotification(context, ingredient.name, sdf.format(expiryDate.time))
             }
         }
@@ -41,6 +38,7 @@ class NotificationReceiver : BroadcastReceiver() {
         val notificationId = ingredientName.hashCode()
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
+        // 알림 채널 생성
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel("expiry_channel", "Expiry Notifications", NotificationManager.IMPORTANCE_DEFAULT).apply {
                 description = "Notifications for items nearing expiry"
@@ -48,12 +46,14 @@ class NotificationReceiver : BroadcastReceiver() {
             notificationManager.createNotificationChannel(channel)
         }
 
+        // 알림 빌더 설정
         val builder = NotificationCompat.Builder(context, "expiry_channel")
-            .setSmallIcon(R.drawable.ic_setting_black_24dp)
+            .setSmallIcon(R.drawable.ic_setting_black_24dp) // 아이콘 설정
             .setContentTitle("소비기한 알림")
-            .setContentText("${ingredientName}의 소비기한이 ${expiryDate}까지입니다.")
+            .setContentText("$ingredientName 가 $expiryDate 까지 소비해야 합니다.")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
+        // 알림 보내기
         try {
             notificationManager.notify(notificationId, builder.build())
             Log.d("NotificationReceiver", "Notification sent for $ingredientName")
