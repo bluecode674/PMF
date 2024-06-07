@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -33,7 +34,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
     companion object {
         private const val DATABASE_NAME = "ingredients.db"
-        private const val DATABASE_VERSION = 3
+        private const val DATABASE_VERSION = 2  // 버전을 2로 증가
         const val TABLE_NAME = "ingre"
         const val COLUMN_NAME = "name"
         const val COLUMN_PURCHASE_DATE = "purchase_date"
@@ -41,6 +42,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         const val COLUMN_STORAGE_LOCATION = "storage_location"
         const val COLUMN_QUANTITY = "quantity"
     }
+
 
     override fun onCreate(db: SQLiteDatabase) {
         val createTable = """
@@ -79,8 +81,9 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     */
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
-        onCreate(db)
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE $TABLE_NAME ADD COLUMN $COLUMN_QUANTITY INTEGER DEFAULT 0")
+        }
     }
 
 
@@ -193,6 +196,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         val itemList = mutableListOf<Ingredient>()
         val db = this.readableDatabase
         val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $COLUMN_STORAGE_LOCATION = ?", arrayOf(location))
+        Log.d("DBHelper", "Cursor count: ${cursor.count}")
         if (cursor.moveToFirst()) {
             do {
                 val name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME))
@@ -200,6 +204,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 val expiryDate = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EXPIRY_DATE))
                 val storageLocation = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_STORAGE_LOCATION))
                 val quantity = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_QUANTITY))
+                Log.d("DBHelper", "Retrieved item: $name, $quantity")
                 itemList.add(Ingredient(name, purchaseDate, expiryDate, storageLocation, quantity))
             } while (cursor.moveToNext())
         }
@@ -207,4 +212,5 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.close()
         return itemList
     }
+
 }
