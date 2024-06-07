@@ -54,9 +54,9 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             )
         """
         db.execSQL(createTable)
-        insertInitialData(db)
+        // insertInitialData(db)
     }
-
+    /*
     private fun insertInitialData(db: SQLiteDatabase) {
         // 초기 데이터 삽입 예제
         val initialData = listOf(
@@ -76,6 +76,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             db.insert(TABLE_NAME, null, values)
         }
     }
+    */
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
