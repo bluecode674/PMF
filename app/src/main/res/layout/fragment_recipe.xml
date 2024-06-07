@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,18 +7,47 @@
     tools:context=".ui.recipe.RecipeFragment"
     android:layout_marginTop="40dp">
 
-    <EditText
-        android:id="@+id/editTextSearch"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="검색어 입력"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/editTextSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="검색어 입력"
+            android:padding="16dp"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/buttonSearchByIngredients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="검색"
+            android:layout_marginLeft="8dp"
+            android:padding="16dp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonRecommendRecipes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="레시피 추천"
+        android:layout_marginTop="8dp"
         android:padding="16dp"
-        android:textSize="16sp" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewRecipes"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 </LinearLayout>

@@ -13,7 +13,7 @@ class RecipeDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "recipe.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
 
         private const val TABLE_RECIPES = "Recipes"
         private const val TABLE_INGREDIENTS = "Ingredients"
@@ -240,6 +240,66 @@ class RecipeDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 ingredientsCursor.close()
 
                 recipes.add(Recipe(id, name, ingredients, instructions))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return recipes
+    }
+
+    fun getRecipesByIngredients(ingredients: List<String>): List<Recipe> {
+        val recipes = mutableListOf<Recipe>()
+        val db = this.readableDatabase
+
+        val ingredientsPlaceholders = ingredients.joinToString(",") { "?" }
+        val query = """
+            SELECT DISTINCT r.* FROM $TABLE_RECIPES r
+            INNER JOIN $TABLE_RECIPE_INGREDIENTS ri ON r.$COLUMN_RECIPE_ID = ri.$COLUMN_RECIPE_INGREDIENT_RECIPE_ID
+            INNER JOIN $TABLE_INGREDIENTS i ON ri.$COLUMN_RECIPE_INGREDIENT_INGREDIENT_ID = i.$COLUMN_INGREDIENT_ID
+            WHERE i.$COLUMN_INGREDIENT_NAME IN ($ingredientsPlaceholders)
+            GROUP BY r.$COLUMN_RECIPE_ID
+            HAVING COUNT(DISTINCT i.$COLUMN_INGREDIENT_NAME) = ?
+        """
+
+        val args = ingredients.toTypedArray() + arrayOf(ingredients.size.toString())
+        val cursor = db.rawQuery(query, args)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RECIPE_ID))
+                val name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RECIPE_NAME))
+                val instructions = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RECIPE_INSTRUCTIONS))
+                val ingredientsList = getIngredientsForRecipe(id)
+                recipes.add(Recipe(id, name, ingredientsList, instructions))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return recipes
+    }
+
+    fun getRecipesByUserIngredients(userIngredients: List<Ingredient>): List<Recipe> {
+        val recipes = mutableListOf<Recipe>()
+        val db = this.readableDatabase
+
+        val ingredientsPlaceholders = userIngredients.joinToString(",") { "?" }
+        val query = """
+            SELECT r.*, COUNT(*) as ingredient_count FROM $TABLE_RECIPES r
+            INNER JOIN $TABLE_RECIPE_INGREDIENTS ri ON r.$COLUMN_RECIPE_ID = ri.$COLUMN_RECIPE_INGREDIENT_RECIPE_ID
+            INNER JOIN $TABLE_INGREDIENTS i ON ri.$COLUMN_RECIPE_INGREDIENT_INGREDIENT_ID = i.$COLUMN_INGREDIENT_ID
+            WHERE i.$COLUMN_INGREDIENT_NAME IN ($ingredientsPlaceholders)
+            GROUP BY r.$COLUMN_RECIPE_ID
+            ORDER BY ingredient_count DESC
+        """
+
+        val args = userIngredients.map { it.name }.toTypedArray()
+        val cursor = db.rawQuery(query, args)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RECIPE_ID))
+                val name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RECIPE_NAME))
+                val instructions = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RECIPE_INSTRUCTIONS))
+                val ingredientsList = getIngredientsForRecipe(id)
+                recipes.add(Recipe(id, name, ingredientsList, instructions))
             } while (cursor.moveToNext())
         }
         cursor.close()
