@@ -14,7 +14,7 @@
     <fragment
         android:id="@+id/navigation_recipe"
         android:name="com.example.pmf.ui.recipe.RecipeFragment"
-        android:label="레시피 등록"
+        android:label="레시피"
         tools:layout="@layout/fragment_recipe">
         <action
             android:id="@+id/action_recipeFragment_to_recipeDetailFragment"

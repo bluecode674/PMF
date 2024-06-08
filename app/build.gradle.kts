@@ -17,15 +17,26 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            keyAlias = "my-key-alias" // 키 별칭
+            keyPassword = "your-key-password" // 키 비밀번호
+            storeFile = file("path/to/keystore.jks") // 키 저장소 파일 경로
+            storePassword = "your-keystore-password" // 키 저장소 비밀번호
+        }
+    }
+
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -36,6 +47,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
 
 }
 

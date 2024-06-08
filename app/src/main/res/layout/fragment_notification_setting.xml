@@ -13,7 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="알림 날짜 입력 (숫자)"
+        android:hint="며칠전에 알림 받을지 입력(예 5)"
         android:inputType="number"
         android:fontFamily="@font/roboto_bold"
         app:layout_constraintStart_toStartOf="parent"
