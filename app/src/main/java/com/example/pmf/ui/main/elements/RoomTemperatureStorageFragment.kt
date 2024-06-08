@@ -93,6 +93,12 @@ class RoomTemperatureStorageFragment : Fragment() {
                     return@setPositiveButton
                 }
 
+                if (isExpiryDateBeforePurchaseDate(ingredient.purchaseDate, updatedExpiryDate)) {
+                    Toast.makeText(requireContext(), "소비 기한은 구매일 이후여야 합니다.", Toast.LENGTH_SHORT).show()
+                    showEditDeleteDialog(ingredient) // 재입력 대화상자를 다시 보여줌
+                    return@setPositiveButton
+                }
+
                 dbHelper.updateItem(
                     ingredient.name,
                     ingredient.purchaseDate,
@@ -127,6 +133,17 @@ class RoomTemperatureStorageFragment : Fragment() {
         return try {
             dateFormatter.parse(date)
             true
+        } catch (e: ParseException) {
+            false
+        }
+    }
+
+    private fun isExpiryDateBeforePurchaseDate(purchaseDate: String, expiryDate: String): Boolean {
+        val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return try {
+            val purchase = dateFormatter.parse(purchaseDate)
+            val expiry = dateFormatter.parse(expiryDate)
+            expiry.before(purchase)
         } catch (e: ParseException) {
             false
         }
