@@ -13,7 +13,7 @@ class RecipeDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "recipe.db"
-        private const val DATABASE_VERSION = 2
+        private const val DATABASE_VERSION = 3
 
         private const val TABLE_RECIPES = "Recipes"
         private const val TABLE_INGREDIENTS = "Ingredients"
