@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
@@ -61,6 +62,7 @@ class IngredientFragment : Fragment() {
                 selectedPurchaseDate = dateFormatter.format(calendar.time)
                 btnPurchaseDate.text = selectedPurchaseDate
                 btnExpiryDate.isEnabled = true // 소비기한 버튼 활성화
+                btnPurchaseDate.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.blue)) // 색상 변경
             }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
 
             // 구매일은 오늘 이전 날짜만 선택 가능
@@ -74,6 +76,7 @@ class IngredientFragment : Fragment() {
                 calendar.set(year, month, day)
                 selectedExpiryDate = dateFormatter.format(calendar.time)
                 btnExpiryDate.text = selectedExpiryDate
+                btnExpiryDate.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.blue)) // 색상 변경
             }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
 
             // 소비기한은 구매일 이후 날짜만 선택 가능
@@ -122,6 +125,7 @@ class IngredientFragment : Fragment() {
             if (result != null) {
                 selectedIngredient = result
                 btnSelectIngredient.text = selectedIngredient
+                btnSelectIngredient.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.blue)) // 색상 변경
             }
         }
 

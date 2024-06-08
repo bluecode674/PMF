@@ -159,7 +159,12 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         } catch (e: Exception) {
             Log.e("DBHelper", "Error opening readable database", e)
             null
-        } ?: return itemList
+        }
+
+        if (db == null) {
+            Log.e("DBHelper", "Readable database is null")
+            return itemList
+        }
 
         val cursor = try {
             db.rawQuery("SELECT * FROM $TABLE_NAME", null)
@@ -179,13 +184,16 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                     itemList.add(Ingredient(name, purchaseDate, expiryDate, storageLocation, quantity))
                 } while (it.moveToNext())
             }
-        } ?: run {
+        }
+
+        if (cursor == null) {
             Log.e("DBHelper", "Cursor is null")
         }
 
         db.close()
         return itemList
     }
+
 
 
     fun searchItems(query: String): List<Ingredient> {

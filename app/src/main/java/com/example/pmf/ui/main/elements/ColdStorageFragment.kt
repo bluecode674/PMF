@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -51,7 +52,8 @@ class ColdStorageFragment : Fragment() {
     }
 
     private fun showEditDeleteDialog(ingredient: Ingredient) {
-        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_edit_delete, null)
+        val dialogView =
+            LayoutInflater.from(requireContext()).inflate(R.layout.dialog_edit_delete, null)
         val tvName = dialogView.findViewById<TextView>(R.id.tv_name)
         val tvPurchaseDate = dialogView.findViewById<TextView>(R.id.tv_purchase_date)
         val etExpiryDate = dialogView.findViewById<EditText>(R.id.et_expiry_date)
@@ -64,11 +66,17 @@ class ColdStorageFragment : Fragment() {
 
         etExpiryDate.setOnClickListener {
             val calendar = Calendar.getInstance()
-            val datePicker = DatePickerDialog(requireContext(), { _, year, month, day ->
-                calendar.set(year, month, day)
-                val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                etExpiryDate.setText(dateFormatter.format(calendar.time))
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+            val datePicker = DatePickerDialog(
+                requireContext(),
+                { _, year, month, day ->
+                    calendar.set(year, month, day)
+                    val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    etExpiryDate.setText(dateFormatter.format(calendar.time))
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            )
             datePicker.show()
         }
 
@@ -81,13 +89,18 @@ class ColdStorageFragment : Fragment() {
                 val updatedQuantity = updatedQuantityStr.toIntOrNull()
 
                 if (!isValidDate(updatedExpiryDate)) {
-                    Toast.makeText(requireContext(), "날짜 형식이 올바르지 않습니다. (형식: yyyy-MM-dd)", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "날짜 형식이 올바르지 않습니다. (형식: yyyy-MM-dd)",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     showEditDeleteDialog(ingredient) // 재입력 대화상자를 다시 보여줌
                     return@setPositiveButton
                 }
 
                 if (updatedQuantity == null || updatedQuantity <= 0) {
-                    Toast.makeText(requireContext(), "수량은 0보다 큰 값이어야 합니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "수량은 0보다 큰 값이어야 합니다.", Toast.LENGTH_SHORT)
+                        .show()
                     showEditDeleteDialog(ingredient) // 재입력 대화상자를 다시 보여줌
                     return@setPositiveButton
                 }
@@ -111,10 +124,19 @@ class ColdStorageFragment : Fragment() {
             .setNeutralButton("취소", null)
             .create()
 
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).typeface =
+                ResourcesCompat.getFont(requireContext(), R.font.roboto_bold)
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).typeface =
+                ResourcesCompat.getFont(requireContext(), R.font.roboto_bold)
+            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).typeface =
+                ResourcesCompat.getFont(requireContext(), R.font.roboto_bold)
+        }
+
         dialog.show()
     }
 
-    private fun isValidDate(date: String): Boolean {
+        private fun isValidDate(date: String): Boolean {
         val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         dateFormatter.isLenient = false
         return try {
