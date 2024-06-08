@@ -60,10 +60,12 @@ class RecipeFragment : Fragment() {
         })
 
         // 재료 기반 검색
+        /*
         binding.buttonSearchByIngredients.setOnClickListener {
             val ingredients = binding.editTextSearch.text.toString().split(",").map { it.trim() }
             updateRecipeListByIngredients(ingredients)
         }
+        */
 
         // 사용자가 등록한 재료 기반 추천
         binding.buttonRecommendRecipes.setOnClickListener {

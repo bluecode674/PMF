@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainFragment"
     android:padding="16dp"
-    android:layout_marginTop="60dp">
+    android:layout_marginTop="60dp"
+    android:layout_marginBottom="40dp">
 
     <!-- 검색 창 -->
     <EditText
