@@ -27,6 +27,8 @@ class NotificationSettingFragment : Fragment() {
             saveNotificationDate()
         }
 
+        setHasOptionsMenu(true)
+
         return root
     }
 

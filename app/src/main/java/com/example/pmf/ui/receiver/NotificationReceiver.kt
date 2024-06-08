@@ -65,7 +65,7 @@ class NotificationReceiver : BroadcastReceiver() {
         val builder = NotificationCompat.Builder(context, "expiry_channel")
             .setSmallIcon(R.drawable.ic_setting_black_24dp) // 아이콘 설정
             .setContentTitle("소비기한 알림")
-            .setContentText("$ingredientName 가 $expiryDate 까지 소비해야 합니다.")
+            .setContentText("${ingredientName}을/를 ${expiryDate}까지 소비해야 합니다.")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         // 알림 보내기

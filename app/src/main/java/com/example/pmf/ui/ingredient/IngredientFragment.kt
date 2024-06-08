@@ -24,6 +24,7 @@ class IngredientFragment : Fragment() {
     private lateinit var selectedPurchaseDate: String
     private lateinit var selectedExpiryDate: String
     private lateinit var selectedIngredient: String
+    private lateinit var btnExpiryDate: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +37,7 @@ class IngredientFragment : Fragment() {
         val btnSelectIngredient: Button = root.findViewById(R.id.btn_select_ingredient)
         val btnAdd: Button = root.findViewById(R.id.btn_add)
         val btnPurchaseDate: Button = root.findViewById(R.id.btn_purchase_date)
-        val btnExpiryDate: Button = root.findViewById(R.id.btn_expiry_date)
+        btnExpiryDate = root.findViewById(R.id.btn_expiry_date)
         val etQuantity: EditText = root.findViewById(R.id.et_quantity)
         val spinnerStorageLocation: Spinner = root.findViewById(R.id.spinner_storage_location)
 
@@ -59,7 +60,11 @@ class IngredientFragment : Fragment() {
                 calendar.set(year, month, day)
                 selectedPurchaseDate = dateFormatter.format(calendar.time)
                 btnPurchaseDate.text = selectedPurchaseDate
+                btnExpiryDate.isEnabled = true // 소비기한 버튼 활성화
             }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+
+            // 구매일은 오늘 이전 날짜만 선택 가능
+            datePicker.datePicker.maxDate = System.currentTimeMillis()
             datePicker.show()
         }
 
@@ -70,15 +75,28 @@ class IngredientFragment : Fragment() {
                 selectedExpiryDate = dateFormatter.format(calendar.time)
                 btnExpiryDate.text = selectedExpiryDate
             }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+
+            // 소비기한은 구매일 이후 날짜만 선택 가능
+            val purchaseDate = dateFormatter.parse(selectedPurchaseDate)?.time
+            if (purchaseDate != null) {
+                datePicker.datePicker.minDate = purchaseDate + 86400000 // 하루 후
+            }
             datePicker.show()
         }
 
         btnAdd.setOnClickListener {
             val storageLocation = spinnerStorageLocation.selectedItem.toString()
-            val quantity = etQuantity.text.toString().trim()
+            val quantityStr = etQuantity.text.toString().trim()
 
-            if (::selectedIngredient.isInitialized && ::selectedPurchaseDate.isInitialized && ::selectedExpiryDate.isInitialized && quantity.isNotEmpty()) {
-                dbHelper.addItem(selectedIngredient, selectedPurchaseDate, selectedExpiryDate, storageLocation, quantity.toInt())
+            // 수량은 음수나 0이 들어올 수 없게 처리
+            val quantity = quantityStr.toIntOrNull()
+            if (quantity == null || quantity <= 0) {
+                Toast.makeText(requireContext(), "올바른 수량을 입력하세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (::selectedIngredient.isInitialized && ::selectedPurchaseDate.isInitialized && ::selectedExpiryDate.isInitialized) {
+                dbHelper.addItem(selectedIngredient, selectedPurchaseDate, selectedExpiryDate, storageLocation, quantity)
                 Toast.makeText(requireContext(), "재료가 추가되었습니다.", Toast.LENGTH_SHORT).show()
 
                 // 필드 초기화
@@ -92,6 +110,7 @@ class IngredientFragment : Fragment() {
                 selectedIngredient = ""
                 selectedPurchaseDate = ""
                 selectedExpiryDate = ""
+                btnExpiryDate.isEnabled = false // 소비기한 버튼 비활성화
             } else {
                 Toast.makeText(requireContext(), "모든 필드를 입력하세요.", Toast.LENGTH_SHORT).show()
             }
@@ -105,6 +124,8 @@ class IngredientFragment : Fragment() {
                 btnSelectIngredient.text = selectedIngredient
             }
         }
+
+        btnExpiryDate.isEnabled = false // 초기에는 소비기한 버튼 비활성화
 
         return root
     }

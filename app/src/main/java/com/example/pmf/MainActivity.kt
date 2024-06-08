@@ -50,6 +50,10 @@ class MainActivity : AppCompatActivity() {
         // 알림 권한 요청 및 확인
         checkNotificationPermission()
     }
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
 
     private fun checkNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
