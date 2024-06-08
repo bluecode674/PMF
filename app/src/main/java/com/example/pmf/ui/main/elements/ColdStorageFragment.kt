@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pmf.DB.DBHelper
 import com.example.pmf.DB.Ingredient
 import com.example.pmf.R
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -75,7 +77,20 @@ class ColdStorageFragment : Fragment() {
             .setView(dialogView)
             .setPositiveButton("수정") { _, _ ->
                 val updatedExpiryDate = etExpiryDate.text.toString()
-                val updatedQuantity = etQuantity.text.toString().toInt()
+                val updatedQuantityStr = etQuantity.text.toString()
+                val updatedQuantity = updatedQuantityStr.toIntOrNull()
+
+                if (!isValidDate(updatedExpiryDate)) {
+                    Toast.makeText(requireContext(), "날짜 형식이 올바르지 않습니다. (형식: yyyy-MM-dd)", Toast.LENGTH_SHORT).show()
+                    showEditDeleteDialog(ingredient) // 재입력 대화상자를 다시 보여줌
+                    return@setPositiveButton
+                }
+
+                if (updatedQuantity == null || updatedQuantity <= 0) {
+                    Toast.makeText(requireContext(), "수량은 0보다 큰 값이어야 합니다.", Toast.LENGTH_SHORT).show()
+                    showEditDeleteDialog(ingredient) // 재입력 대화상자를 다시 보여줌
+                    return@setPositiveButton
+                }
 
                 dbHelper.updateItem(
                     ingredient.name,
@@ -97,5 +112,16 @@ class ColdStorageFragment : Fragment() {
             .create()
 
         dialog.show()
+    }
+
+    private fun isValidDate(date: String): Boolean {
+        val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        dateFormatter.isLenient = false
+        return try {
+            dateFormatter.parse(date)
+            true
+        } catch (e: ParseException) {
+            false
+        }
     }
 }
