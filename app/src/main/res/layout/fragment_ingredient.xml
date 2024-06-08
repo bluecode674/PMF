@@ -14,9 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="재료 선택"
+        android:fontFamily="@font/roboto_bold"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="#2196F3"
-        android:textColor="@android:color/white"
+        android:backgroundTint="@color/pastel_blue"
+        android:textColor="@color/white"
         android:elevation="4dp"
         android:textSize="14sp" />
 
@@ -25,9 +26,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="구매 날짜 선택"
+        android:fontFamily="@font/roboto_bold"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="#2196F3"
-        android:textColor="@android:color/white"
+        android:backgroundTint="@color/pastel_blue"
+        android:textColor="@color/white"
         android:elevation="4dp"
         android:textSize="14sp" />
 
@@ -36,17 +38,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="소비 기한 선택"
+        android:fontFamily="@font/roboto_bold"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="#2196F3"
-        android:textColor="@android:color/white"
+        android:backgroundTint="@color/pastel_blue"
+        android:textColor="@color/white"
         android:elevation="4dp"
         android:textSize="14sp" />
 
     <EditText
         android:id="@+id/et_quantity"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="수량 입력"
+        android:fontFamily="@font/roboto_bold"
         android:inputType="number"
         android:layout_marginBottom="24dp"
         android:textSize="18sp" />
@@ -54,9 +58,10 @@
     <Spinner
         android:id="@+id/spinner_storage_location"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginBottom="24dp"
         android:prompt="@string/storage_location_prompt"
+        android:fontFamily="@font/roboto_bold"
         android:textSize="18sp" />
 
     <View
@@ -69,8 +74,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="추가"
-        android:backgroundTint="#4CAF50"
-        android:textColor="@android:color/white"
+        android:fontFamily="@font/roboto_bold"
+        android:backgroundTint="@color/pastel_green"
+        android:textColor="@color/white"
         android:elevation="4dp"
         android:textSize="16sp" />
 

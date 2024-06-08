@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="검색어 입력"
+            android:fontFamily="@font/roboto_bold"
             android:padding="16dp"
             android:textSize="16sp" />
         <!--
@@ -39,11 +40,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="레시피 추천"
+        android:fontFamily="@font/roboto_bold"
         android:layout_marginTop="8dp"
         android:padding="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:backgroundTint="#2196F3"
+        android:backgroundTint="@color/pastel_pink"
         android:textColor="@android:color/white" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -51,6 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:fontFamily="@font/lato_regular"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />

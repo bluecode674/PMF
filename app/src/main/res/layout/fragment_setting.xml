@@ -17,6 +17,7 @@
         android:clickable="true"
         android:onClick="saveSettings"
         android:text="알림 설정하기"
+        android:fontFamily="@font/roboto_bold"
         android:textSize="18sp"
         android:textStyle="bold"
         android:padding="12dp"

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -110,6 +111,12 @@ class FreezeFragment : Fragment() {
             }
             .setNeutralButton("취소", null)
             .create()
+
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).typeface = ResourcesCompat.getFont(requireContext(), R.font.roboto_bold)
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).typeface = ResourcesCompat.getFont(requireContext(), R.font.roboto_bold)
+            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).typeface = ResourcesCompat.getFont(requireContext(), R.font.roboto_bold)
+        }
 
         dialog.show()
     }
